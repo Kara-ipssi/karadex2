@@ -10,6 +10,10 @@ import {
 import { StyleSheet } from "react-native";
 
 const PokemonCard = ({ pokemon, navigation }) => {
+    const { name, url } = pokemon;
+    const id = parseInt(url.substr(34, 3));
+    pokemon.id = id;
+    console.group(url, id);
     return (
         <Box style={styles.card}>
             <Pressable
@@ -22,13 +26,14 @@ const PokemonCard = ({ pokemon, navigation }) => {
             >
                 <Image
                     source={{
-                        uri: `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokemon.numero}.png`,
+                        // uri: `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokemon.numero}.png`,
+                        uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
                     }}
                     alt="Alternate Text"
                     size="xl"
                 />
-                <Heading size="lg">{pokemon.name}</Heading>
-                <Text>{pokemon.numero}</Text>
+                <Heading size="lg">{name}</Heading>
+                {/* <Text>{pokemon.numero || "000"}</Text> */}
             </Pressable>
         </Box>
     );

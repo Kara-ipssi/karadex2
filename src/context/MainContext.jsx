@@ -1,27 +1,27 @@
 import { createContext, useEffect, useState } from "react";
-
+import { API_URL } from "../config";
 const MainContext = createContext();
 
 const MainProvider = ({ children }) => {
     const [data, setData] = useState([]);
+    const [nextUrl, setNextUrl] = useState("");
     const getData = async () => {
         const options = {
             method: "GET",
             headers: {
-                "X-RapidAPI-Host": "burgers1.p.rapidapi.com",
-                "X-RapidAPI-Key":
-                    "c8eda165a8msh4caef87aea6987fp13b16fjsn1478ca110374",
+                "Content-type": "application/json",
             },
         };
 
         try {
             const response = await fetch(
-                "https://burgers1.p.rapidapi.com/burgers",
+                `${API_URL}/pokemon?offset=0&limit=20`,
                 options
             );
             const data = await response.json();
-            // console.log(data);
-            return setData(data);
+            console.log(data);
+            setNextUrl(data.next);
+            return setData(data.results);
         } catch (error) {
             throw error;
         }
@@ -29,6 +29,7 @@ const MainProvider = ({ children }) => {
     const value = {
         getData,
         data: [data, setData],
+        nextUrl: [nextUrl, setNextUrl],
     };
 
     return (

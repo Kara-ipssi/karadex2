@@ -1,4 +1,6 @@
-import { Text } from "native-base";
+// import { Text } from "native-base";
+// import { useEffect, useContext } from "react";
+// import { MainContext } from "../../context";
 import { PokemonList } from "../../component";
 
 const Home = ({ navigation }) => {
