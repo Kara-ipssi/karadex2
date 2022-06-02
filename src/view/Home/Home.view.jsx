@@ -1,8 +1,8 @@
 import { Text } from "native-base";
 import { PokemonList } from "../../component";
 
-const Home = () => {
-    return <PokemonList />;
+const Home = ({ navigation }) => {
+    return <PokemonList navigation={navigation} />;
 };
 
 export default Home;

@@ -5,7 +5,7 @@ import PokemonCard from "../PokemonCard/PokemonCard";
 import data from "../../../constant/pokemon";
 import { StyleSheet } from "react-native";
 
-const PokemonList = () => {
+const PokemonList = ({ navigation }) => {
     return (
         <FlatList
             numColumns={2}
@@ -13,7 +13,9 @@ const PokemonList = () => {
             style={styles.container}
             data={data}
             renderItem={({ item: pokemon }) => {
-                return <PokemonCard pokemon={pokemon} />;
+                return (
+                    <PokemonCard pokemon={pokemon} navigation={navigation} />
+                );
             }}
         />
     );
