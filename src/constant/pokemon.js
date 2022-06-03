@@ -1,4 +1,11 @@
 // Liste de pokemon
+
+export const HistoirePokemon = [
+    {
+        histoire: "Les pokemons sont ",
+    },
+];
+
 export default [
     {
         id: 1,

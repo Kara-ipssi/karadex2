@@ -23,7 +23,7 @@ const PokemonDetails = ({ pokemon }) => {
                         <Box background="red.100" style={styles.imageBox}>
                             <Image
                                 source={{
-                                    uri: `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokemon.numero}.png`,
+                                    uri: `${pokemon.image}`,
                                 }}
                                 alt="Alternate Text"
                                 size="2xl"
@@ -32,14 +32,22 @@ const PokemonDetails = ({ pokemon }) => {
                         <Heading style={styles.descTitle} size="md">
                             Description
                         </Heading>
-                        <Box>{pokemon.description}</Box>
+                        <Text
+                            style={{
+                                textAlign: "justify",
+                                marginTop: 20,
+                                marginBottom: 20,
+                            }}
+                        >
+                            {pokemon.description}
+                        </Text>
                         <Heading style={styles.descTitle} size="md">
                             Type
                         </Heading>
                         <Box style={styles.badgeContainer}>
                             <FlatList
                                 horizontal={true}
-                                data={pokemon.type}
+                                data={pokemon.types}
                                 renderItem={({ item }, key) => (
                                     <Badge key={item} type={item} />
                                 )}
@@ -79,6 +87,7 @@ const styles = StyleSheet.create({
         width: "100%",
         alignItems: "center",
         justifyContent: "center",
+        marginBottom: 30,
     },
     imageBox: {
         height: 350,

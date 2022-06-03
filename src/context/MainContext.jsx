@@ -1,11 +1,9 @@
 import { createContext, useEffect, useState } from "react";
 import { API_URL } from "../config";
 const MainContext = createContext();
-
 const MainProvider = ({ children }) => {
     const [data, setData] = useState([]);
-    const [nextUrl, setNextUrl] = useState("");
-    const getData = async () => {
+    const getPokemonList = async (offset = 0, limit = 20) => {
         const options = {
             method: "GET",
             headers: {
@@ -15,21 +13,18 @@ const MainProvider = ({ children }) => {
 
         try {
             const response = await fetch(
-                `${API_URL}/pokemon?offset=0&limit=20`,
+                `${API_URL}/pokemon?offset=${offset}&limit=${limit}`,
                 options
             );
-            const data = await response.json();
-            console.log(data);
-            setNextUrl(data.next);
-            return setData(data.results);
+            const { results } = await response.json();
+            return setData(results);
         } catch (error) {
             throw error;
         }
     };
     const value = {
-        getData,
+        getPokemonList,
         data: [data, setData],
-        nextUrl: [nextUrl, setNextUrl],
     };
 
     return (

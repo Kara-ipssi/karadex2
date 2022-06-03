@@ -1,28 +1,41 @@
-import { Box, FlatList, Text } from "native-base";
-import { useContext, useEffect } from "react";
+import { Box, FlatList, Spinner, Text } from "native-base";
+import { useContext, useEffect, useState } from "react";
 import { MainContext } from "../../../context";
 import PokemonCard from "../PokemonCard/PokemonCard";
 
-import data2 from "../../../constant/pokemon";
+// import data from "../../../constant/pokemon";
 import { StyleSheet } from "react-native";
 
 const PokemonList = ({ navigation }) => {
-    const { data, getData } = useContext(MainContext);
+    const [nbDisplay, setnbDisplay] = useState(20);
+    const { data, getPokemonList } = useContext(MainContext);
+
+    const handleScroll = () => {
+        setnbDisplay(20);
+    };
     useEffect(() => {
-        getData();
+        getPokemonList();
     }, []);
     return (
-        <FlatList
-            numColumns={2}
-            horizontal={false}
-            style={styles.container}
-            data={data[0]}
-            renderItem={({ item: pokemon }) => {
-                return (
-                    <PokemonCard pokemon={pokemon} navigation={navigation} />
-                );
-            }}
-        />
+        <>
+            <FlatList
+                numColumns={2}
+                horizontal={false}
+                style={styles.container}
+                data={data[0].slice(0, nbDisplay)}
+                // data={data}
+                onEndReached={() => handleScroll()}
+                renderItem={({ item: pokemon }) => {
+                    return (
+                        <PokemonCard
+                            pokemon={pokemon}
+                            navigation={navigation}
+                        />
+                    );
+                }}
+            />
+            {<Spinner />}
+        </>
     );
 };
 

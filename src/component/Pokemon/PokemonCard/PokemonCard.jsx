@@ -8,32 +8,60 @@ import {
     Pressable,
 } from "native-base";
 import { StyleSheet } from "react-native";
-
+import { useEffect, useContext, useState } from "react";
+import { MainContext } from "../../../context";
+import { API_URL } from "../../../config";
+import { Pokemon } from "../../../model";
 const PokemonCard = ({ pokemon, navigation }) => {
-    const { name, url } = pokemon;
-    const id = parseInt(url.substr(34, 3));
-    pokemon.id = id;
-    console.group(url, id);
+    const [data, setData] = useState({});
+    const [loading, setLoading] = useState(false);
+    const getPokemon = async (name) => {
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-type": "application/json",
+            },
+        };
+
+        try {
+            setLoading(true);
+            const response = await fetch(`${API_URL}/pokemon/${name}`, options);
+            const data = await response.json();
+            // console.log(data, "one poke");
+            let poke = new Pokemon(data);
+            setData(poke);
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            console.log(error);
+        }
+    };
+    useEffect(() => {
+        getPokemon(pokemon.name);
+    }, [pokemon]);
+
+    if (loading === true) {
+        return <Text>Chargement</Text>;
+    }
     return (
         <Box style={styles.card}>
             <Pressable
                 onPress={() =>
                     navigation.navigate("poke_details", {
-                        pokemon,
+                        pokemon: data,
                     })
                 }
                 style={styles.presseble}
             >
                 <Image
                     source={{
-                        // uri: `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokemon.numero}.png`,
-                        uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
+                        uri: `${data.image}`,
                     }}
                     alt="Alternate Text"
                     size="xl"
                 />
-                <Heading size="lg">{name}</Heading>
-                {/* <Text>{pokemon.numero || "000"}</Text> */}
+                <Heading size="lg">{data.name}</Heading>
+                <Text>{data.numero || "000"}</Text>
             </Pressable>
         </Box>
     );
